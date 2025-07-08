@@ -10,11 +10,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'https://ubiquitous-meerkat-e0fdbb.netlify.app',
+  origin: 'https://incredible-cannoli-f5ea80.netlify.app',
   credentials: true
-}));
-
-
+}))
 
 
 app.use(session({
