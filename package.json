@@ -25,8 +25,7 @@
     "path": "^0.12.7",
     "pg": "^8.16.3",
     "session": "^0.1.0",
-    "tailwind": "^4.0.0"
+    "tailwind": "^2.3.1"
   },
-  "keywords": [],
-  "devDependencies": {}
+  "keywords": []
 }
