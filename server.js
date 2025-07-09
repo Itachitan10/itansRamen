@@ -8,13 +8,13 @@ const path = require('path');
 
 // ✅ Allowed origins
 const allowedOrigins = [
-  'https://tourmaline-babka-c5b065.netlify.app/',
   'https://incredible-cannoli-f5ea80.netlify.app',
+  'https://tourmaline-babka-c5b065.netlify.app',
   'http://localhost:5173'
 ];
 
 // ✅ CORS middleware
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -22,24 +22,31 @@ app.use(cors({
       callback(new Error('Origin not allowed by CORS'));
     }
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+};
 
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle preflight OPTIONS
+
+// ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
 
+// ✅ Session middleware
 app.use(session({
-  secret: "your_secret_key", 
+  secret: "your_secret_key",
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true kung HTTPS (e.g. production)
+    secure: process.env.NODE_ENV === 'production', // true if on HTTPS
     httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     maxAge: 1000 * 60 * 60 * 24 // 1 day
   }
 }));
 
-// ✅ Import route handlers
+// ✅ Route handlers
 const login = require('./routes/login');
 const register = require('./routes/register');
 const product = require('./routes/product');
@@ -53,7 +60,7 @@ app.use('/', product);
 app.use('/', cart);
 app.use('/', fullVerify);
 
-// ✅ Start server
+// ✅ Server start
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
