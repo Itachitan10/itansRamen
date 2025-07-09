@@ -8,8 +8,7 @@ const path = require('path');
 
 // ✅ Allowed origins
 const allowedOrigins = [
-  'https://incredible-cannoli-f5ea80.netlify.app',
-  'https://tourmaline-babka-c5b065.netlify.app',
+ 'https://tourmaline-babka-c5b065.netlify.app',
   'http://localhost:5173'
 ];
 
