@@ -4,46 +4,58 @@ const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const conn = require('./db/database'); // Assuming this connects to your DB
+const path = require('path');
 
+// ✅ Allowed origins
+const allowedOrigins = [
+  'https://incredible-cannoli-f5ea80.netlify.app',
+  'https://tourmaline-babka-c5b065.netlify.app',
+  'http://localhost:5173' // Optional: pang-local dev
+];
+
+// ✅ CORS middleware
+app.use(cors({
+  origin: function (origin, callback) {
+    // Payagan kung walang origin (Postman, curl, etc.) o nasa allowed list
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origin not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-  origin: 'https://incredible-cannoli-f5ea80.netlify.app',
-  credentials: true
-}))
 app.use(session({
   secret: "your_secret_key", 
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true if using HTTPS
+    secure: false, // Set to true kung HTTPS (e.g. production)
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 // 1 day
   }
 }));
 
-// Import route handlers
+// ✅ Import route handlers
 const login = require('./routes/login');
 const register = require('./routes/register');
 const product = require('./routes/product');
 const cart = require('./routes/cart');
 const fullVerify = require('./routes/verefy');
-const path = require('path');
 
-// Mount routes
+// ✅ Mount routes
 app.use('/', login);
 app.use('/', register);
 app.use('/', product);
 app.use('/', cart);
-app.use('/', fullVerify)
+app.use('/', fullVerify);
 
-// Start the server
+// ✅ Start server
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-
-// https://itan-ramen-shop1-1.onrender.com/"
