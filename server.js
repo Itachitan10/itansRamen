@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const conn = require('./db/database'); // Assuming this connects to your DB
 
-// Parse incoming JSON and cookies
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -13,8 +13,6 @@ app.use(cors({
   origin: 'https://incredible-cannoli-f5ea80.netlify.app',
   credentials: true
 }))
-
-
 app.use(session({
   secret: "your_secret_key", 
   resave: false,
