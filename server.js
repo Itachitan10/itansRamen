@@ -3,20 +3,19 @@ const app = express();
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const conn = require('./db/database'); // Assuming this connects to your DB
+const conn = require('./db/database'); 
 const path = require('path');
 
 // ✅ Allowed origins
 const allowedOrigins = [
   'https://incredible-cannoli-f5ea80.netlify.app',
   'https://tourmaline-babka-c5b065.netlify.app',
-  'http://localhost:5173' // Optional: pang-local dev
+  'http://localhost:5173'
 ];
 
 // ✅ CORS middleware
 app.use(cors({
   origin: function (origin, callback) {
-    // Payagan kung walang origin (Postman, curl, etc.) o nasa allowed list
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
