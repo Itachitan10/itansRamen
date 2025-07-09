@@ -59,7 +59,6 @@ routes.get("/userId", (req, res) => {
     res.status(404).json({ mess: "No userId in session" });
   }
 });
-
 routes.get("/id", (req, res) => {
   const id = req.session.userId;
   
